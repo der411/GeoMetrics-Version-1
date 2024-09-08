@@ -1,0 +1,89 @@
+.title {
+  text-align: center;
+}
+
+/* CSS pour l'icone Accueil */
+
+.bi-house-door {
+  font-size: 36px;
+  color: #000000;
+}
+
+/* Style de base pour l'icône */
+.right-link a i.bi-house-door {
+  transition: transform 0.3s ease; /* Transition lente */
+  display: inline-block;
+}
+
+/* Effet lors du survol de l'icône */
+.right-link a:hover i.bi-house-door {
+  transform: rotate(-15deg); /* Incline l'icône légèrement vers la gauche */
+}
+
+.right-link a:active i.bi-house-door {
+  transform: rotate(
+    15deg
+  ); /* Incline l'icône légèrement vers la droite lors du clique */
+}
+
+/* CSS pour le footer */
+
+main {
+  flex: 1 0 auto; /* Pousse le pied de page vers le bas */
+}
+
+footer {
+  position: relative;
+  flex-shrink: 0; /* Cela empêche le pied de page de se réduire s'il n'y a pas beaucoup de contenu */
+  margin-top: 200px;
+  background-color: #3d3d3d;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 10px;
+}
+
+.footer-links a {
+  padding: 0 15px; /* Espace à droite et à gauche du texte du lien */
+  border-right: 1px solid #000;
+  text-decoration: none;
+  color: white;
+}
+
+.footer-links a:last-child {
+  border-right: none; /* Supprime la bordure du dernier lien */
+}
+
+.bi-facebook {
+  position: absolute;
+  top: -48px;
+  right: 50px;
+  color: blue;
+  font-size: 2rem;
+  background-color: white;
+}
+
+.bi-tiktok {
+  position: absolute;
+  top: -46px;
+  right: 0;
+  color: black;
+  font-size: 1.9rem;
+  background-color: white;
+}
+
+.bi-instagram {
+  position: absolute;
+  top: -48px;
+  right: 100px;
+  color: #cd486b;
+  font-size: 2rem;
+  background-color: white;
+}
+
+.bi-github {
+  position: absolute;
+  top: -48px;
+  right: 150px;
+  font-size: 2rem;
+  background-color: white;
+}

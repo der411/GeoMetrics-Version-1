@@ -1,0 +1,285 @@
+<!-------------------------------------------Navigateur------------------------------------------------>
+
+<div class="nav row">
+  <div class="text-center mb-2 link-2d">
+    <a routerLink="/forme2d"><b>2 D</b></a>
+  </div>
+  <div class="text-center mb-2">
+    <a routerLink="/cone">Cone</a>
+  </div>
+  <div class="text-center mb-2">
+    <a routerLink="/cylindre">Cylindre</a>
+  </div>
+  <div class="text-center mb-2">
+    <a routerLink="/sphere">Sphère</a>
+  </div>
+</div>
+
+<!--------------------------------------------Caluler-------------------------------------------------->
+
+<div class="container">
+  <div class="postit"><i class="bi bi-calculator"></i> Cube</div>
+  <div class="row">
+    <div class="col-6 d-flex justify-content-center align-items-center">
+      <div class="form-link col-2"><a href="https://fr.wikipedia.org/wiki/Cube" target="_blank"><img src="assets/images/loupe.png" alt="lien wikipédia"></a>
+      </div>
+      <div class="cube-drawn">
+        <img src="assets/images/6.png" alt="cube" />
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="carre-calcul">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-2">Nom</div>
+          <div class="col-8">
+            <input [(ngModel)]="nom" type="text" class="form-control" />
+          </div>
+        </div>
+
+        <div class="row justify-content-center align-items-center">
+          <div class="col-2">Couleur</div>
+          <div class="col-8">
+            <input [(ngModel)]="couleur" type="text" class="form-control" />
+          </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+          <div class="col-2">a</div>
+          <div class="col-8">
+            <input [(ngModel)]="cote" type="number" min="0" class="form-control" />
+          </div>
+        </div>
+        <div class="calcul-result">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-8 m-2">
+              <Strong>Surface</Strong> {{ surface.toFixed(2) }} m<sup>2</sup>
+            </div>
+            <div class="col-8 mb-3">
+              <Strong>Volume</Strong> {{ volume.toFixed(2) }} m<sup>3</sup>
+            </div>
+            <div class="col-8">
+              <button (click)="calculer()">Calculer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-------------------------------------Lecture des cubes existants----------------------------------->
+
+<div class="container">
+  <h2>Voir les cubes existants</h2>
+  <button class="btn btn-primary" (click)="toggleCubes()">
+    <i class="bi bi-caret-down"></i><i class="bi bi-caret-up"></i>
+  </button>
+  <div *ngIf="showCubes">
+    <div class="row">
+      <div *ngFor="let cube of cubes" class="col-3">
+        <div class="mini-container">
+          <p><Strong>Nom :</Strong> {{ cube.nom }}</p>
+          <p><Strong>Couleur :</Strong> {{ cube.couleur }}</p>
+          <p><Strong>a :</Strong> {{ cube.cote }} m</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <!---------------------------------- Modifier un cube------------------------------------------------->
+    <div class="col-md-6">
+      <h2>Modifier un cube</h2>
+      <form (ngSubmit)="updateCube()">
+        <div class="row align-items-center">
+          <div class="col-2 mt-3">
+            <label for="id">Id</label>
+          </div>
+          <div class="col-6 mt-3">
+            <select
+              [(ngModel)]="selectedCubeId"
+              name="cubeId"
+              class="form-control"
+              (change)="onIdChange()"
+              required
+            >
+              <option *ngFor="let cube of cubes" [value]="cube.id">
+                {{ cube.id }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row align-items-center">
+          <div class="col-2">
+            <label for="nom">Nom</label>
+          </div>
+          <div class="col-4">
+            <input
+              type="text"
+              id="nom"
+              [(ngModel)]="nom"
+              name="nom"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-2">
+            <label for="couleur">Couleur</label>
+          </div>
+          <div class="col-4">
+            <input
+              type="text"
+              id="couleur"
+              [(ngModel)]="couleur"
+              name="couleur"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-2">
+            <label for="cote">a</label>
+          </div>
+          <div class="col-4">
+            <input
+              type="number"
+              min="0"
+              id="cote"
+              [(ngModel)]="cote"
+              name="cote"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit">Modifier</button>
+      </form>
+    </div>
+    <!---------------------------- Rechercher un Cone à partir de son ID---------------------------->
+    <div class="col-md-6">
+      <div class="d-flex align-items-center justify-content-between col-6">
+        <h2>Recherche par ID</h2>
+        <div class="input-group w-25">
+          <select
+            class="form-control"
+            [(ngModel)]="selectedCubeId"
+            (change)="getCubeById(selectedCubeId)"
+          >
+            <option *ngFor="let cube of cubes" [value]="cube.id">
+              {{ cube.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Section pour afficher les détails du cube recherché -->
+      <div *ngIf="cube" class="mt-3">
+        <div class="mini-card">
+          <p><Strong>Nom :</Strong> {{ cube.nom }}</p>
+          <p><Strong>Couleur :</Strong> {{ cube.couleur }}</p>
+          <p><Strong>a :</Strong> {{ cube.cote }} m</p>
+          <p>
+            <Strong>Surface :</Strong>
+            {{ 6 * cube.cote * cube.cote | number : "1.2-2" }} m<sup>2</sup>
+          </p>
+          <p>
+            <Strong>Volume :</Strong>
+            {{ cube.cote * cube.cote * cube.cote | number : "1.2-2" }} m<sup
+              >3</sup
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-------------------------------------------Ajouter un cube----------------------------------------->
+<div class="row">
+  <div class="col-3 row-equal-height">
+    <div class="container">
+      <h2>Ajouter un cube</h2>
+      <form (ngSubmit)="addCube(nom, couleur, cote)">
+        <div class="row align-items-center">
+          <div class="col-4">
+            <label for="nom">Nom</label>
+          </div>
+          <div class="col-8">
+            <input
+              type="text"
+              id="nom"
+              [(ngModel)]="nom"
+              name="nom"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="row align-items-center">
+          <div class="col-4">
+            <label for="couleur">Couleur</label>
+          </div>
+          <div class="col-8">
+            <input
+              type="text"
+              id="couleur"
+              [(ngModel)]="couleur"
+              name="couleur"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="row align-items-center">
+          <div class="col-4">
+            <label for="cote">a</label>
+          </div>
+          <div class="col-8">
+            <input
+              type="number"
+              min="0"
+              id="cote"
+              [(ngModel)]="cote"
+              name="cote"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit">Ajouter</button>
+      </form>
+    </div>
+  </div>
+  <!----------------------------------Liste de tous les cubes----------------------------------------->
+  <div class="col-9">
+    <h2 class="text-center mt-2 mini-container">
+      <i class="bi bi-trash-fill"></i>
+    </h2>
+    <div class="row">
+      <div *ngFor="let cube of cubes" class="col-3">
+        <div class="mini-container">
+          <p><Strong>Nom :</Strong> {{ cube.nom }}</p>
+          <p><Strong>Couleur :</Strong> {{ cube.couleur }}</p>
+          <p><Strong>a :</Strong> {{ cube.cote }} m</p>
+          <p>
+            <Strong>Surface :</Strong>
+            {{ 6 * cube.cote * cube.cote | number : "1.2-2" }} m<sup>2</sup>
+          </p>
+          <p>
+            <Strong>Volume :</Strong>
+            {{ cube.cote * cube.cote * cube.cote | number : "1.2-2" }} m<sup
+              >3</sup
+            >
+          </p>
+          <button (click)="deleteCube(cube)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

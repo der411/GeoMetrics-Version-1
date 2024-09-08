@@ -1,0 +1,382 @@
+<!------------------------------------------Navigateur------------------------------------------------>
+<div class="nav row">
+  <div class="text-center mb-2 link-3d">
+    <a routerLink="/forme3d"><b>3 D</b></a>
+  </div>
+  <div class="text-center mb-2">
+    <a routerLink="/carre">Carré</a>
+  </div>
+  <div class="text-center mb-2">
+    <a routerLink="/triangle">Triangle</a>
+  </div>
+  <div class="text-center mb-2">
+    <a routerLink="/rectangle">Rectangle</a>
+  </div>
+  <div class="text-center mb-2">
+    <a routerLink="/cercle">Cercle</a>
+  </div>
+</div>
+
+<!------------------------------------------Caluler-------------------------------------------------->
+
+<div class="container">
+  <div class="postit"><i class="bi bi-calculator"></i> Losange</div>
+  <div class="row">
+    <div class="col-6 d-flex justify-content-center align-items-center">
+      <div class="form-link col-2"><a href="https://fr.wikipedia.org/wiki/Losange" target="_blank"><img src="assets/images/loupe.png" alt="lien wikipédia"></a>
+      </div>
+      <div class="losange-drawn">
+        <img src="assets/images/4.png" alt="losange" />
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="cercle-calcul">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-2">Nom</div>
+          <div class="col-8">
+            <input [(ngModel)]="nom" type="text" class="form-control" />
+          </div>
+        </div>
+
+        <div class="row justify-content-center align-items-center">
+          <div class="col-2">Couleur</div>
+          <div class="col-8">
+            <input [(ngModel)]="couleur" type="text" class="form-control" />
+          </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+          <div class="col-2">a</div>
+          <div class="col-8">
+            <input [(ngModel)]="cote" type="number" min="0" class="form-control" />
+          </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+          <div class="col-2">D</div>
+          <div class="col-8">
+            <input
+              [(ngModel)]="grandeDiag"
+              type="number"
+              min="0"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row justify-content-center align-items-center">
+          <div class="col-2">d</div>
+          <div class="col-8">
+            <input
+              [(ngModel)]="petiteDiag"
+              type="number"
+              min="0"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="calcul-result">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-8 m-2">
+              <Strong>Surface</Strong> {{ surface.toFixed(2) }} m<sup>2</sup>
+            </div>
+            <div class="col-8 mb-3">
+              <Strong>Périmètre</Strong> {{ perimetre.toFixed(2) }} m
+            </div>
+            <div class="col-8">
+              <button (click)="calculer()">Calculer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---------------------------------Lecture des losanges existants----------------------------------->
+
+<div class="container">
+  <h2>Voir les losanges existants</h2>
+  <button class="btn btn-primary" (click)="toggleLosanges()">
+    <i class="bi bi-caret-down"></i><i class="bi bi-caret-up"></i>
+  </button>
+  <div *ngIf="showLosanges">
+    <div class="row">
+      <div *ngFor="let losange of losanges" class="col-3">
+        <div class="mini-container">
+          <p><Strong>Nom :</Strong> {{ losange.nom }}</p>
+          <p><Strong>Couleur :</Strong> {{ losange.couleur }}</p>
+          <p><Strong>a :</Strong> {{ losange.cote }} m</p>
+          <p><Strong>D :</Strong> {{ losange.grandeDiag }} m</p>
+          <p><Strong>d :</Strong> {{ losange.petiteDiag }} m</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <!---------------------------------- Modifier un losange---------------------------------------------->
+    <div class="col-md-6">
+      <h2>Modifier un losange</h2>
+      <form (ngSubmit)="updateLosange()">
+        <div class="row align-items-center">
+          <div class="col-2 mt-3">
+            <label for="id">Id</label>
+          </div>
+          <div class="col-6 mt-3">
+            <select
+              [(ngModel)]="selectedLosangeId"
+              name="losangeId"
+              class="form-control"
+              (change)="onIdChange()"
+              required
+            >
+              <option *ngFor="let losange of losanges" [value]="losange.id">
+                {{ losange.id }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row align-items-center">
+          <div class="col-2">
+            <label for="nom">Nom</label>
+          </div>
+          <div class="col-4">
+            <input
+              type="text"
+              id="nom"
+              [(ngModel)]="nom"
+              name="nom"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-2">
+            <label for="couleur">Couleur</label>
+          </div>
+          <div class="col-4">
+            <input
+              type="text"
+              id="couleur"
+              [(ngModel)]="couleur"
+              name="couleur"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-2">
+            <label for="cote">a</label>
+          </div>
+          <div class="col-4">
+            <input
+              type="number"
+              min="0"
+              id="cote"
+              [(ngModel)]="cote"
+              name="cote"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-2">
+            <label for="grandeDiag">D</label>
+          </div>
+          <div class="col-4">
+            <input
+              type="number"
+              min="0"
+              id="grandeDiag"
+              [(ngModel)]="grandeDiag"
+              name="grandeDiag"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-2">
+            <label for="petiteDiag">d</label>
+          </div>
+          <div class="col-4">
+            <input
+              type="number"
+              min="0"
+              id="petiteDiag"
+              [(ngModel)]="petiteDiag"
+              name="petiteDiag"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit">Modifier</button>
+      </form>
+    </div>
+    <!---------------------------- Rechercher un Cercle à partir de son ID---------------------------->
+    <div class="col-md-6">
+      <div class="d-flex align-items-center justify-content-between col-6">
+        <h2>Recherche par ID</h2>
+        <div class="input-group w-25">
+          <select
+            class="form-control"
+            [(ngModel)]="selectedLosangeId"
+            (change)="getLosangeById(selectedLosangeId)"
+          >
+            <option *ngFor="let losange of losanges" [value]="losange.id">
+              {{ losange.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Section pour afficher les détails du losange recherché -->
+      <div *ngIf="losange" class="mt-3">
+        <div class="mini-card">
+          <p><Strong>Nom :</Strong> {{ losange.nom }}</p>
+          <p><Strong>Couleur :</Strong> {{ losange.couleur }}</p>
+          <p><Strong>a :</Strong> {{ losange.cote }} m</p>
+          <p><Strong>D:</Strong> {{ losange.grandeDiag }} m</p>
+          <p><Strong>d:</Strong> {{ losange.petiteDiag }} m</p>
+          <p>
+            <Strong>Surface:</Strong>
+            {{
+              (losange.petiteDiag * losange.grandeDiag) / 2 | number : "1.2-2"
+            }}
+            m<sup>2</sup>
+          </p>
+          <p>
+            <Strong>Périmètre:</Strong>
+            {{ 4 * losange.cote | number : "1.2-2" }} m
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-----------------------------------------Ajouter un losange----------------------------------------->
+<div class="row">
+  <!-- Div parente -->
+  <div class="col-3 row-equal-height">
+    <div class="container">
+      <h2>Ajouter un losange</h2>
+      <form (ngSubmit)="addLosange(nom, couleur, cote, petiteDiag, grandeDiag)">
+        <div class="row align-items-center">
+          <div class="col-4">
+            <label for="nom">Nom</label>
+          </div>
+          <div class="col-8">
+            <input
+              type="text"
+              id="nom"
+              [(ngModel)]="nom"
+              name="nom"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="row align-items-center">
+          <div class="col-4">
+            <label for="couleur">Couleur</label>
+          </div>
+          <div class="col-8">
+            <input
+              type="text"
+              id="couleur"
+              [(ngModel)]="couleur"
+              name="couleur"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="row align-items-center">
+          <div class="col-4">
+            <label for="cote">a</label>
+          </div>
+          <div class="col-8">
+            <input
+              type="number"
+              min="0"
+              id="cote"
+              [(ngModel)]="cote"
+              name="cote"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-4">
+            <label for="grandeDiag">D</label>
+          </div>
+          <div class="col-8">
+            <input
+              type="number"
+              min="0"
+              id="grandeDiag"
+              [(ngModel)]="grandeDiag"
+              name="grandeDiag"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-4">
+            <label for="petiteDiag">d</label>
+          </div>
+          <div class="col-8">
+            <input
+              type="number"
+              min="0"
+              id="petiteDiag"
+              [(ngModel)]="petiteDiag"
+              name="petiteDiag"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit">Ajouter</button>
+      </form>
+    </div>
+  </div>
+  <!----------------------------------Liste de tous les losanges----------------------------------------->
+  <div class="col-9">
+    <h2 class="text-center mt-2 mini-container">
+      <i class="bi bi-trash-fill"></i>
+    </h2>
+    <div class="row">
+      <div *ngFor="let losange of losanges" class="col-3">
+        <div class="mini-container">
+          <p><Strong>Nom:</Strong> {{ losange.nom }}</p>
+          <p><Strong>Couleur:</Strong> {{ losange.couleur }}</p>
+          <p><Strong>a:</Strong> {{ losange.cote }} m</p>
+          <p><Strong>D:</Strong> {{ losange.grandeDiag }} m</p>
+          <p><Strong>d:</Strong> {{ losange.petiteDiag }} m</p>
+          <p>
+            <Strong>Surface:</Strong>
+            {{
+              (losange.petiteDiag * losange.grandeDiag) / 2 | number : "1.2-2"
+            }}
+            m<sup>2</sup>
+          </p>
+          <p>
+            <Strong>Périmètre:</Strong>
+            {{ 4 * losange.cote | number : "1.2-2" }} m
+          </p>
+          <button (click)="deleteLosange(losange)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
